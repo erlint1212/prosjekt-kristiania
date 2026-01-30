@@ -62,3 +62,22 @@ func change_color(new_state: ColorState) -> void:
 			sprite_visual.modulate = Color.GREEN
 		ColorState.BLUE:
 			sprite_visual.modulate = Color.BLUE
+
+func take_damage(amount: int) -> void:
+	print("Player took damage: ", amount)
+	# Add health logic here, e.g.:
+	# health -= amount
+	# if health <= 0: die()
+	
+	# Visual feedback (flash white)
+	var tween = create_tween()
+	tween.tween_property(sprite_visual, "modulate", Color.WHITE, 0.1)
+	tween.tween_property(sprite_visual, "modulate", get_current_color_value(), 0.1)
+
+func get_current_color_value() -> Color:
+	# Helper to get the actual Color object for the tween above
+	match current_color_state:
+		ColorState.RED: return Color.RED
+		ColorState.GREEN: return Color.GREEN
+		ColorState.BLUE: return Color.BLUE
+	return Color.WHITE

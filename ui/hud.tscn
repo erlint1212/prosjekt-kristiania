@@ -15,3 +15,9 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="Colors" type="Label" parent="Control" unique_id=785623749]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "G > R > B > G"

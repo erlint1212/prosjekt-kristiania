@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 GameManager="*uid://b5c2ewo04iw1k"
 
+[global_group]
+
+Enemies=""
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
