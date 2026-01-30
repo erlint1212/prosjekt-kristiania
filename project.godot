@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="prosjekt kristiania"
+run/main_scene="uid://186iqolkj6wn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+GameManager="*uid://b5c2ewo04iw1k"
 
 [physics]
 

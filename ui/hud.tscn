@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cihjtbk4yn5bn"]
+
+[ext_resource type="Script" uid="uid://dj2x81dxenl0f" path="res://ui/hud.gd" id="1_rbyyf"]
+
+[node name="Hud" type="CanvasLayer" unique_id=512347848]
+script = ExtResource("1_rbyyf")
+
+[node name="Control" type="Control" parent="." unique_id=518966013]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScoreLabel" type="Label" parent="Control" unique_id=1022811875]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0

@@ -1,0 +1,64 @@
+extends CharacterBody2D
+
+# --- COLOR LOGIC (Keep this) ---
+enum ColorState { RED, GREEN, BLUE }
+var current_color_state: ColorState = ColorState.RED
+# Use ColorRect if you switched to it, otherwise use Sprite2D
+@onready var sprite_visual: Node2D = $Sprite2D # Change to $ColorRect if you are using that
+
+# --- PHYSICS VARIABLES ---
+@export_category("Movement Stats")
+@export var speed: float = 300.0
+@export var jump_velocity: float = -400.0 # Negative goes UP in Godot
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+func _ready() -> void:
+	# Initialize color on start
+	change_color(ColorState.RED)
+
+func _physics_process(delta: float) -> void:
+	# 1. Apply Gravity
+	# We only add gravity if we are NOT on the floor
+	if not is_on_floor():
+		velocity.y += gravity * delta
+
+	# 2. Handle Jump
+	# "ui_accept" is mapped to Spacebar/Enter by default
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+		velocity.y = jump_velocity
+
+	# 3. Handle Left/Right Movement
+	# We use get_axis now, which only checks Left (-1) and Right (+1)
+	var direction = Input.get_axis("ui_left", "ui_right")
+	
+	if direction:
+		velocity.x = direction * speed
+	else:
+		# Slow down to 0 if no button is pressed
+		velocity.x = move_toward(velocity.x, 0, speed)
+
+	move_and_slide()
+
+func _unhandled_input(event: InputEvent) -> void:
+	# Check for color change keys (1, 2, 3)
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_1:
+			change_color(ColorState.RED)
+		elif event.keycode == KEY_2:
+			change_color(ColorState.GREEN)
+		elif event.keycode == KEY_3:
+			change_color(ColorState.BLUE)
+
+func change_color(new_state: ColorState) -> void:
+	current_color_state = new_state
+	
+	# If you are using PlaceholderTexture or ColorRect, 'modulate' works for both
+	match current_color_state:
+		ColorState.RED:
+			sprite_visual.modulate = Color.RED
+		ColorState.GREEN:
+			sprite_visual.modulate = Color.GREEN
+		ColorState.BLUE:
+			sprite_visual.modulate = Color.BLUE
