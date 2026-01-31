@@ -6,8 +6,10 @@ extends Node2D
 func _ready() -> void:
 	print("Level 1 Loaded")
 	
-	# Connect Player Signal -> HUD Function
 	player.health_changed.connect(hud.update_health)
 	
-	# Force an update right now so the bar starts full
+	# --- NEW CONNECTION ---
+	# When player dies -> Show HUD Game Over screen
+	player.player_died.connect(hud.show_game_over)
+	
 	hud.update_health(player.current_health, player.max_health)

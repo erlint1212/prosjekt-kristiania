@@ -91,8 +91,12 @@ func take_damage(amount: int) -> void:
 func die() -> void:
 	player_died.emit()
 	print("Player Died!")
-	# For now, just reload the scene to try again
-	get_tree().reload_current_scene()
+	
+	# REMOVED: get_tree().reload_current_scene()
+	
+	# OPTIONAL: Hide the player so they look "dead" without deleting the script
+	visible = false
+	process_mode = Node.PROCESS_MODE_DISABLED # Stop moving/shooting
 
 func get_current_color_value() -> Color:
 	match current_color_state:
