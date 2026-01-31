@@ -1,22 +1,28 @@
 extends CharacterBody2D
 
-# --- COLOR LOGIC (Keep this) ---
+# --- NEW SIGNALS ---
+signal health_changed(current_value, max_value)
+signal player_died
+
+# --- COLOR LOGIC (Keep existing) ---
 enum ColorState { RED, GREEN, BLUE }
 var current_color_state: ColorState = ColorState.RED
-# Use ColorRect if you switched to it, otherwise use Sprite2D
-@onready var sprite_visual: Node2D = $Sprite2D # Change to $ColorRect if you are using that
+@onready var sprite_visual: Node2D = $Sprite2D
 
-# --- PHYSICS VARIABLES ---
+# --- NEW HEALTH VARIABLES ---
+@export var max_health: int = 5
+@onready var current_health: int = max_health
+
+# --- PHYSICS VARIABLES (Keep existing) ---
 @export_category("Movement Stats")
 @export var speed: float = 300.0
-@export var jump_velocity: float = -400.0 # Negative goes UP in Godot
-
-# Get the gravity from the project settings to be synced with RigidBody nodes.
+@export var jump_velocity: float = -400.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready() -> void:
-	# Initialize color on start
 	change_color(ColorState.RED)
+	# Initialize HUD immediately
+	health_changed.emit(current_health, max_health)
 
 func _physics_process(delta: float) -> void:
 	# Gravity logic...
@@ -59,19 +65,30 @@ func change_color(new_state: ColorState) -> void:
 		ColorState.BLUE:
 			sprite_visual.modulate = Color.BLUE
 
+# --- UPDATED DAMAGE LOGIC ---
 func take_damage(amount: int) -> void:
-	print("Player took damage: ", amount)
-	# Add health logic here, e.g.:
-	# health -= amount
-	# if health <= 0: die()
+	current_health -= amount
+	
+	# Broadcast the update to the HUD
+	health_changed.emit(current_health, max_health)
+	
+	print("Player took damage: ", amount, " | Health: ", current_health)
 	
 	# Visual feedback (flash white)
 	var tween = create_tween()
 	tween.tween_property(sprite_visual, "modulate", Color.WHITE, 0.1)
 	tween.tween_property(sprite_visual, "modulate", get_current_color_value(), 0.1)
 
+	if current_health <= 0:
+		die()
+
+func die() -> void:
+	player_died.emit()
+	print("Player Died!")
+	# For now, just reload the scene to try again
+	get_tree().reload_current_scene()
+
 func get_current_color_value() -> Color:
-	# Helper to get the actual Color object for the tween above
 	match current_color_state:
 		ColorState.RED: return Color.RED
 		ColorState.GREEN: return Color.GREEN

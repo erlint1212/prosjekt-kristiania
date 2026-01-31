@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dj2x81dxenl0f" path="res://ui/hud.gd" id="1_rbyyf"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rbyyf"]
+bg_color = Color(1, 0, 0.023529412, 1)
+
 [node name="Hud" type="CanvasLayer" unique_id=512347848]
 script = ExtResource("1_rbyyf")
 
@@ -11,13 +14,25 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Colors" type="Label" parent="Control" unique_id=785623749]
+[node name="HealthBar" type="ProgressBar" parent="Control" unique_id=2129130455]
 layout_mode = 0
-offset_right = 97.0
-offset_bottom = 23.0
+offset_right = 200.0
+offset_bottom = 30.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_rbyyf")
+max_value = 5.0
+value = 5.0
+show_percentage = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=606516924]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 31.0
+offset_right = 98.0
+offset_bottom = 81.0
+
+[node name="Colors" type="Label" parent="Control/VBoxContainer" unique_id=785623749]
+layout_mode = 2
 text = "G > R > B > G"
 
-[node name="ScoreLabel" type="Label" parent="Control" unique_id=1022811875]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="ScoreLabel" type="Label" parent="Control/VBoxContainer" unique_id=1022811875]
+layout_mode = 2
