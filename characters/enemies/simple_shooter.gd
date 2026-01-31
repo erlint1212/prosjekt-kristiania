@@ -30,7 +30,10 @@ var enemy_color: ColorState = ColorState.RED
 @export_category("Telegraph Settings")
 @export var telegraph_time: float = 0.4 
 
-var health: int = 3
+@export_category("Effects")
+@export var death_effect_scene: PackedScene
+
+var health: int = 1
 var current_pattern_index: int = 0
 
 func _ready() -> void:
@@ -47,23 +50,35 @@ func fire_burst() -> void:
 		shoot_next_bullet()
 		await get_tree().create_timer(shot_delay).timeout
 
+# UPDATED: No more scaling
 func telegraph_shot() -> void:
 	var upcoming_color = color_pattern[current_pattern_index]
-	
-	# --- ADD THIS LINE ---
-	# Update the variable so the bullet knows the enemy is vulnerable NOW
 	enemy_color = upcoming_color 
 	
 	update_visual_color(upcoming_color)
 	
 	var tween = create_tween()
-	tween.tween_property(sprite, "scale", Vector2(1.2, 0.8), telegraph_time * 0.5)
-	tween.parallel().tween_property(sprite, "modulate", Color.WHITE, telegraph_time * 0.5)
 	
-	tween.tween_property(sprite, "scale", Vector2(1.0, 1.0), telegraph_time * 0.5)
-	tween.parallel().tween_property(sprite, "modulate", get_color_value(upcoming_color), telegraph_time * 0.5)
+	# Just flash WHITE to warn the player (No scale change)
+	tween.tween_property(sprite, "modulate", Color.WHITE, telegraph_time * 0.5)
+	
+	# Return to the correct color
+	tween.tween_property(sprite, "modulate", get_color_value(upcoming_color), telegraph_time * 0.5)
 	
 	await tween.finished
+
+# UPDATED: Spawns particles
+func die() -> void:
+	# DEBUG: Check if the scene is actually assigned
+	if death_effect_scene == null:
+		print("ERROR: death_effect_scene is NULL! I cannot explode.")
+	else:
+		print("Spawning effect...")
+		var effect = death_effect_scene.instantiate()
+		effect.global_position = global_position
+		get_parent().add_child(effect)
+
+	queue_free()
 
 func shoot_next_bullet() -> void:
 	if bullet_scene == null: return
@@ -100,7 +115,7 @@ func take_damage(amount: int) -> void:
 	tween.tween_property(sprite, "modulate", get_color_value(next_color), 0.1)
 
 	if health <= 0:
-		queue_free()
+		die()
 
 # Helper to convert Enum to actual Color
 func get_color_value(state: ColorState) -> Color:

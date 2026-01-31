@@ -7,8 +7,14 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_508ok"]
 size = Vector2(35, 35)
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_508ok"]
-size = Vector2(40, 40)
+[sub_resource type="Gradient" id="Gradient_exd8k"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5dc8e"]
+gradient = SubResource("Gradient_exd8k")
+width = 40
+height = 40
+fill_to = Vector2(0, 0.008695652)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xxgcw"]
 size = Vector2(20, 3)
@@ -20,12 +26,14 @@ script = ExtResource("1_508ok")
 shape = SubResource("RectangleShape2D_508ok")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=216624608]
-texture = SubResource("PlaceholderTexture2D_508ok")
+texture = SubResource("GradientTexture2D_5dc8e")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1398070464]
 position_smoothing_enabled = true
 
 [node name="Gun" type="Node2D" parent="." unique_id=608634517]
+process_mode = 4
+visible = false
 script = ExtResource("2_xxgcw")
 bullet_scene = ExtResource("3_exd8k")
 

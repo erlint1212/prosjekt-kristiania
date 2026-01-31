@@ -11,13 +11,13 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
+[node name="Colors" type="Label" parent="Control" unique_id=785623749]
+layout_mode = 0
+offset_right = 97.0
+offset_bottom = 23.0
+text = "G > R > B > G"
+
 [node name="ScoreLabel" type="Label" parent="Control" unique_id=1022811875]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-
-[node name="Colors" type="Label" parent="Control" unique_id=785623749]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
-text = "G > R > B > G"

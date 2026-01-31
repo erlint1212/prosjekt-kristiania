@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="1_aqu4p"]
 [ext_resource type="Script" uid="uid://cwac5t1fgk3vl" path="res://characters/enemies/simple_shooter.gd" id="1_g1dvk"]
+[ext_resource type="PackedScene" uid="uid://bbyrkgweo14p" path="res://effects/EnemyDeathEffect.tscn" id="3_baf2p"]
 [ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="3_fpvi4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
@@ -10,6 +11,7 @@
 collision_layer = 5
 script = ExtResource("1_g1dvk")
 bullet_scene = ExtResource("3_fpvi4")
+death_effect_scene = ExtResource("3_baf2p")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1610434282]
 scale = Vector2(0.4, 0.4)
