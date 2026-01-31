@@ -53,11 +53,23 @@ func handle_character_collision(target: Node2D) -> void:
 	elif "enemy_color" in target:
 		target_color = target.enemy_color
 	
-	# CASE A: Same Color -> Phase Through
+	# --- NEW LOGIC STARTS HERE ---
+	
+	# 1. SPECIAL RULE: If this is an Enemy and the bullet is Reflected, ALWAYS DAMAGE.
+	# We skip the color math because the player already did the work to reflect it.
+	if reflected and "enemy_color" in target:
+		if target.has_method("take_damage"):
+			target.take_damage(damage)
+		queue_free()
+		return
+	
+	# --- NEW LOGIC ENDS HERE ---
+	
+	# 2. Standard Logic (Player getting hit, or un-reflected bullets)
 	if target_color == bullet_color:
-		return 
+		return # Phase through
 
-	# CASE B: "Reflect" Color (Cycle: Green > Red > Blue > Green)
+	# Check reflection conditions (Rock Paper Scissors)
 	var is_reflect_match = false
 	match bullet_color:
 		ColorState.RED:   is_reflect_match = (target_color == ColorState.GREEN)
@@ -66,9 +78,8 @@ func handle_character_collision(target: Node2D) -> void:
 
 	if is_reflect_match:
 		reflect_bullet(target)
-	
-	# CASE C: "Damage" Color
 	else:
+		# Deal damage (Player getting hit)
 		if target.has_method("take_damage"):
 			target.take_damage(damage)
 		queue_free()
@@ -78,12 +89,10 @@ func reflect_bullet(new_shooter: Node2D) -> void:
 	
 	reflected = true
 	direction = -direction
-	speed *= 1.5 # Return faster
 	
-	# The person who reflected it is now the "shooter"
+	# CHANGE THIS: Increase speed significantly (e.g., 3x or 4x)
+	speed *= 3.0 
+	
 	shooter = new_shooter
-	
-	# Reset collision masks to hit EVERYTHING except the new shooter
-	# We turn on both mask 1 (Player) and 3 (Enemy) so it can hit anyone else
 	set_collision_mask_value(1, true)
 	set_collision_mask_value(3, true)

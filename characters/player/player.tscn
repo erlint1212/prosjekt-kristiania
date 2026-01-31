@@ -19,7 +19,7 @@ fill_to = Vector2(0, 0.008695652)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xxgcw"]
 size = Vector2(20, 3)
 
-[node name="Player" type="CharacterBody2D" unique_id=708763606]
+[node name="Player" type="CharacterBody2D" unique_id=708763606 groups=["Player"]]
 script = ExtResource("1_508ok")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2140316450]

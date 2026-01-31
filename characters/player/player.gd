@@ -17,6 +17,7 @@ var current_color_state: ColorState = ColorState.RED
 @export_category("Movement Stats")
 @export var speed: float = 300.0
 @export var jump_velocity: float = -400.0
+@export var fast_fall_multiplier: float = 4.0
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready() -> void:
@@ -25,14 +26,19 @@ func _ready() -> void:
 	health_changed.emit(current_health, max_health)
 
 func _physics_process(delta: float) -> void:
-	# Gravity logic...
+	# --- UPDATED GRAVITY LOGIC ---
 	if not is_on_floor():
-		velocity.y += gravity * delta
+		# Check if player is holding DOWN
+		if Input.is_action_pressed("move_down"):
+			# Apply massive gravity
+			velocity.y += gravity * fast_fall_multiplier * delta
+		else:
+			# Apply normal gravity
+			velocity.y += gravity * delta
 
-	# 1. JUMP (Mapped to 'W' in Input Map)
+	# 1. JUMP
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
-
 	# 2. LEFT/RIGHT (Mapped to 'A' and 'D' in Input Map)
 	var direction = Input.get_axis("move_left", "move_right")
 	

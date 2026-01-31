@@ -1,21 +1,21 @@
-[gd_scene format=3 uid="uid://bwg4sy1661mly"]
+[gd_scene format=3 uid="uid://4jqledpki63v"]
 
-[ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="1_aqu4p"]
-[ext_resource type="Script" uid="uid://cwac5t1fgk3vl" path="res://characters/enemies/simple_shooter.gd" id="1_g1dvk"]
-[ext_resource type="PackedScene" uid="uid://bbyrkgweo14p" path="res://effects/EnemyDeathEffect.tscn" id="3_baf2p"]
-[ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="3_fpvi4"]
+[ext_resource type="Script" uid="uid://cwac5t1fgk3vl" path="res://characters/enemies/simple_shooter.gd" id="1_c5hd3"]
+[ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="2_eolgn"]
+[ext_resource type="PackedScene" uid="uid://bbyrkgweo14p" path="res://effects/EnemyDeathEffect.tscn" id="3_gqmrn"]
+[ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="4_mxv7u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
 
 [node name="SimpleShooter" type="CharacterBody2D" unique_id=627157932 groups=["Enemies"]]
 collision_layer = 5
-script = ExtResource("1_g1dvk")
-bullet_scene = ExtResource("3_fpvi4")
-death_effect_scene = ExtResource("3_baf2p")
+script = ExtResource("1_c5hd3")
+bullet_scene = ExtResource("2_eolgn")
+death_effect_scene = ExtResource("3_gqmrn")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1610434282]
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("1_aqu4p")
+texture = ExtResource("4_mxv7u")
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1534417879]
