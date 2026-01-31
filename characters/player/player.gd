@@ -19,24 +19,20 @@ func _ready() -> void:
 	change_color(ColorState.RED)
 
 func _physics_process(delta: float) -> void:
-	# 1. Apply Gravity
-	# We only add gravity if we are NOT on the floor
+	# Gravity logic...
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
-	# 2. Handle Jump
-	# "ui_accept" is mapped to Spacebar/Enter by default
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	# 1. JUMP (Mapped to 'W' in Input Map)
+	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 
-	# 3. Handle Left/Right Movement
-	# We use get_axis now, which only checks Left (-1) and Right (+1)
-	var direction = Input.get_axis("ui_left", "ui_right")
+	# 2. LEFT/RIGHT (Mapped to 'A' and 'D' in Input Map)
+	var direction = Input.get_axis("move_left", "move_right")
 	
 	if direction:
 		velocity.x = direction * speed
 	else:
-		# Slow down to 0 if no button is pressed
 		velocity.x = move_toward(velocity.x, 0, speed)
 
 	move_and_slide()
