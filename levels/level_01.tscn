@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://cihjtbk4yn5bn" path="res://ui/hud.tscn" id="2_81a5f"]
 [ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="4_gg43x"]
 [ext_resource type="PackedScene" uid="uid://bwg4sy1661mly" path="res://characters/enemies/simple_shooter.tscn" id="5_mllcm"]
+[ext_resource type="PackedScene" uid="uid://bxd5iyfsbk7tn" path="res://characters/enemies/shotgun.tscn" id="6_q7ibo"]
+[ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="7_cg8v6"]
+[ext_resource type="Texture2D" uid="uid://dc5bvjyjy258q" path="res://assets/Space-Background.png" id="8_j0sdw"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gg43x"]
 
@@ -127,3 +130,16 @@ tile_set = SubResource("TileSet_gg43x")
 
 [node name="SimpleShooter" parent="." unique_id=627157932 instance=ExtResource("5_mllcm")]
 position = Vector2(1058, 532)
+
+[node name="Shotgun" parent="." unique_id=2045061379 instance=ExtResource("6_q7ibo")]
+position = Vector2(800, 536)
+bullet_scene = ExtResource("7_cg8v6")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=865110090]
+texture_repeat = 2
+offset_left = -216.0
+offset_top = 128.0
+offset_right = 1224.0
+offset_bottom = 784.0
+texture = ExtResource("8_j0sdw")
+stretch_mode = 1
