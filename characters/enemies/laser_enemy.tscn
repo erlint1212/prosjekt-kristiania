@@ -3,6 +3,56 @@
 [ext_resource type="Script" uid="uid://c5kxxax1hobtb" path="res://characters/enemies/laser_enemy.gd" id="1_6yb1w"]
 [ext_resource type="PackedScene" uid="uid://bbyrkgweo14p" path="res://effects/EnemyDeathEffect.tscn" id="3_ya65d"]
 [ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="4_nnsnf"]
+[ext_resource type="Texture2D" uid="uid://cc6he03uapu6m" path="res://assets/Idle-White-Slime.png" id="4_u1brx"]
+[ext_resource type="AudioStream" uid="uid://moivw18vpw3c" path="res://assets/audio/laser/spaceEngineLow_000.ogg" id="5_lfw1v"]
+[ext_resource type="AudioStream" uid="uid://cefu7ow1xncf1" path="res://assets/audio/laser/laserLarge_000.ogg" id="6_v2h1e"]
+[ext_resource type="AudioStream" uid="uid://l810fv875v6v" path="res://assets/audio/laser/laserLarge_001.ogg" id="7_fln8g"]
+[ext_resource type="AudioStream" uid="uid://vyucxbknk2p0" path="res://assets/audio/laser/laserLarge_002.ogg" id="8_vgi05"]
+[ext_resource type="AudioStream" uid="uid://cktop5hylkdkh" path="res://assets/audio/laser/laserLarge_003.ogg" id="9_acs0o"]
+[ext_resource type="AudioStream" uid="uid://cbb35y3ie7gex" path="res://assets/audio/laser/laserLarge_004.ogg" id="10_6088o"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ldh80"]
+atlas = ExtResource("4_u1brx")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xg6fg"]
+atlas = ExtResource("4_u1brx")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l1gj"]
+atlas = ExtResource("4_u1brx")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_swh1t"]
+atlas = ExtResource("4_u1brx")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dnaak"]
+atlas = ExtResource("4_u1brx")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lfw1v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ldh80")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xg6fg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l1gj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_swh1t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dnaak")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
 
@@ -40,15 +90,29 @@ metadata/_snap_enabled = true
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_ya65d"]
 gradient = SubResource("Gradient_lfw1v")
 
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_pajh1"]
+streams_count = 5
+stream_0/stream = ExtResource("6_v2h1e")
+stream_1/stream = ExtResource("7_fln8g")
+stream_2/stream = ExtResource("8_vgi05")
+stream_3/stream = ExtResource("9_acs0o")
+stream_4/stream = ExtResource("10_6088o")
+
 [node name="LaserEnemy" type="CharacterBody2D" unique_id=627157932 groups=["Enemies"]]
 collision_layer = 5
 script = ExtResource("1_6yb1w")
 death_effect_scene = ExtResource("3_ya65d")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1610434282]
+visible = false
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_nnsnf")
 flip_h = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=824155181]
+texture_filter = 1
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_lfw1v")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1534417879]
 shape = SubResource("RectangleShape2D_aqu4p")
@@ -76,3 +140,11 @@ texture = SubResource("GradientTexture2D_lfw1v")
 [node name="ImpactLight" type="PointLight2D" parent="." unique_id=225526240]
 energy = 0.0
 texture = SubResource("GradientTexture2D_ya65d")
+
+[node name="ChargePlayer" type="AudioStreamPlayer2D" parent="." unique_id=1657720336]
+stream = ExtResource("5_lfw1v")
+parameters/looping = true
+
+[node name="BeamPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1090020716]
+stream = SubResource("AudioStreamRandomizer_pajh1")
+volume_db = 2.737

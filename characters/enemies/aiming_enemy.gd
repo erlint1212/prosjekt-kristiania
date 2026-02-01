@@ -32,7 +32,8 @@ var player_ref: Node2D = null # Store reference to player
 
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
-@onready var sprite: Sprite2D = $Sprite2D
+#@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite = $AnimatedSprite2D
 @onready var glow_light = $GlowLight
 
 func _ready() -> void:
@@ -45,6 +46,7 @@ func _ready() -> void:
 	# 2. Setup Timer
 	timer.wait_time = reload_time
 	timer.start()
+	sprite.play("default")
 	timer.timeout.connect(_on_timer_timeout)
 
 func _physics_process(_delta: float) -> void:

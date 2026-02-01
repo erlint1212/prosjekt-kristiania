@@ -45,7 +45,8 @@ var enemy_color: ColorState = ColorState.RED
 
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
-@onready var sprite: Sprite2D = $Sprite2D
+#@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite = $AnimatedSprite2D
 @onready var glow_light: PointLight2D = $GlowLight
 
 var health: int = 5 

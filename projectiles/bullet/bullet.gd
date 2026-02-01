@@ -38,6 +38,7 @@ func _on_body_entered(body: Node2D) -> void:
 	
 	# Walls
 	if body is TileMapLayer:
+		
 		queue_free()
 		return
 

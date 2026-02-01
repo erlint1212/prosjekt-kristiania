@@ -5,6 +5,17 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2k6nh"]
 
+[sub_resource type="Gradient" id="Gradient_xi5co"]
+offsets = PackedFloat32Array(0.006024096, 1)
+colors = PackedColorArray(0.48817873, 1, 0.45627594, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_smrco"]
+gradient = SubResource("Gradient_xi5co")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="Flag" type="Area2D" unique_id=1549655090]
 collision_layer = 32
 collision_mask = 4
@@ -18,3 +29,6 @@ scale = Vector2(2, 2)
 texture = ExtResource("2_xi5co")
 region_enabled = true
 region_rect = Rect2(272, 112, 16, 16)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1952743326]
+texture = SubResource("GradientTexture2D_smrco")

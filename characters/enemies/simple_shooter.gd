@@ -24,7 +24,9 @@ var enemy_color: ColorState = ColorState.RED
 
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
-@onready var sprite: Sprite2D = $Sprite2D
+#@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite = $AnimatedSprite2D
+
 @onready var glow_light = $GlowLight
 
 @export_category("Telegraph Settings")
@@ -40,6 +42,7 @@ var health: int = 3
 var current_pattern_index: int = 0
 
 func _ready() -> void:
+	sprite.play("default")
 	timer.wait_time = reload_time
 	timer.start()
 	timer.timeout.connect(_on_timer_timeout)

@@ -17,10 +17,11 @@ func _ready() -> void:
 	# We use 'connect' directly. Since we removed the editor connection,
 	# we don't need to check 'is_connected' constantly.
 	if flag.has_signal("level_completed"):
-		flag.level_completed.connect(_on_flag_level_completed)
-		print("Flag signal successfully connected via Code")
+		if not flag.level_completed.is_connected(_on_flag_level_completed):
+			flag.level_completed.connect(_on_flag_level_completed)
+			print("Flag signal connected.")
 	else:
-		print("ERROR: Flag node does not have signal 'level_completed'")
+		print("ERROR: Flag node missing signal")
 	
 	hud.update_health(player.current_health, player.max_health)
 

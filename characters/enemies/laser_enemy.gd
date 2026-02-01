@@ -2,6 +2,13 @@ extends CharacterBody2D
 
 enum ColorState { RED, GREEN, BLUE }
 
+# --- AUDIO EXPORTS ---
+# Drag sound files here if you didn't set them in the scene inspector
+@export_category("Audio")
+@export var reflect_sound: AudioStream
+@onready var charge_player: AudioStreamPlayer2D = $ChargePlayer
+@onready var beam_player: AudioStreamPlayer2D = $BeamPlayer
+
 # --- CONFIGURATION ---
 @export_category("Combat Settings")
 @export var score_value: int = 300
@@ -23,7 +30,8 @@ enum ColorState { RED, GREEN, BLUE }
 @onready var laser_ray: RayCast2D = $LaserRay
 @onready var laser_line: Line2D = $LaserLine
 @onready var laser_glow: Line2D = $LaserGlow 
-@onready var sprite: Sprite2D = $Sprite2D
+#@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite = $AnimatedSprite2D
 @onready var timer: Timer = $Timer
 
 @onready var glow_light: PointLight2D = $GlowLight # The enemy body glow
@@ -36,6 +44,7 @@ var current_pattern_index: int = 0
 var enemy_color: ColorState = ColorState.RED
 var health: int = 3
 var player_ref: Node2D = null
+var was_reflected_last_frame: bool = false
 
 # NEW: Track if we are currently being reflected
 var is_being_reflected: bool = false
@@ -53,6 +62,7 @@ func _ready() -> void:
 	
 	timer.wait_time = reload_time
 	timer.start()
+	sprite.play("default")
 	
 	if not timer.timeout.is_connected(start_attack_sequence):
 		timer.timeout.connect(start_attack_sequence)
@@ -81,27 +91,50 @@ func _physics_process(delta: float) -> void:
 				update_laser_visuals(15.0, 1.0, 3.0, 80.0) 
 			else:
 				update_laser_visuals(12.0, 1.0, 2.0, 60.0)
+	# --- NEW SOUND LOGIC FOR REFLECTION ---
+	# We only play the sound on the exact frame reflection starts
+	if is_being_reflected and not was_reflected_last_frame:
+		if reflect_sound:
+			GameManager.play_sound_at(global_position, reflect_sound, 5.0) # Play loud!
+	
+	was_reflected_last_frame = is_being_reflected
 
 func start_attack_sequence() -> void:
 	timer.stop()
 	
 	# 1. SETUP & RESET
-	has_dealt_damage = false # Reset damage flag for new shot
+	has_dealt_damage = false 
 	var upcoming_color = color_pattern[current_pattern_index]
 	enemy_color = upcoming_color
 	update_sprite_color(upcoming_color)
 	
-	# 2. SEQUENCE
+	# --- AUDIO START: CHARGE ---
+	if charge_player.stream:
+		# Pitch scale can make it sound faster/slower based on duration
+		charge_player.pitch_scale = 1.0 
+		charge_player.play()
+	
+	# 2. SEQUENCE (Telegraph)
 	current_state = State.TELEGRAPH
 	laser_line.visible = true
 	laser_glow.visible = true 
 	await get_tree().create_timer(telegraph_duration).timeout
 	
+	# (Locked)
 	current_state = State.LOCKED
 	await get_tree().create_timer(lock_duration).timeout
 	
+	# --- AUDIO SWITCH: FIRE ---
+	charge_player.stop() # Stop charging
+	if beam_player.stream:
+		beam_player.play() # Start looping hum
+	
+	# (Firing)
 	current_state = State.FIRING
 	await get_tree().create_timer(fire_duration).timeout
+	
+	# --- AUDIO STOP ---
+	beam_player.stop()
 	
 	# 3. RESET
 	current_state = State.IDLE
