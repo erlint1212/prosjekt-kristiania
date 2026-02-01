@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6xct4oytyyrr"
-path="res://.godot/imported/Blue-Barrier.png-6210742b1d61c6643e22279dee054d1c.ctex"
+uid="uid://b8jxfn8mf5ub"
+path="res://.godot/imported/White-Slime.png-7df0a3e05e9fb2f6f209de5968a14f36.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Blue-Barrier.png"
-dest_files=["res://.godot/imported/Blue-Barrier.png-6210742b1d61c6643e22279dee054d1c.ctex"]
+source_file="res://assets/White-Slime.png"
+dest_files=["res://.godot/imported/White-Slime.png-7df0a3e05e9fb2f6f209de5968a14f36.ctex"]
 
 [params]
 

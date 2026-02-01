@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://boyy081lnbr7n"
-path="res://.godot/imported/Red-Barrier.png-91bec192a00c54ad72f079a915b4933e.ctex"
+uid="uid://cc6he03uapu6m"
+path="res://.godot/imported/Idle-White-Slime.png-a022bdbfea62debbaa254e6e9b686ca4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Red-Barrier.png"
-dest_files=["res://.godot/imported/Red-Barrier.png-91bec192a00c54ad72f079a915b4933e.ctex"]
+source_file="res://assets/Idle-White-Slime.png"
+dest_files=["res://.godot/imported/Idle-White-Slime.png-a022bdbfea62debbaa254e6e9b686ca4.ctex"]
 
 [params]
 
