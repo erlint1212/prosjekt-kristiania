@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://b4blftljemiah"]
+
+[ext_resource type="Script" uid="uid://c5kxxax1hobtb" path="res://characters/enemies/laser_enemy.gd" id="1_6yb1w"]
+[ext_resource type="PackedScene" uid="uid://bbyrkgweo14p" path="res://effects/EnemyDeathEffect.tscn" id="3_ya65d"]
+[ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="4_nnsnf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_e0v5u"]
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_e0v5u"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u1brx"]
+gradient = SubResource("Gradient_e0v5u")
+fill_to = Vector2(0, 1)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ebgpr"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_u1brx"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lfw1v"]
+gradient = SubResource("Gradient_u1brx")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_lfw1v"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ya65d"]
+gradient = SubResource("Gradient_lfw1v")
+
+[node name="LaserEnemy" type="CharacterBody2D" unique_id=627157932 groups=["Enemies"]]
+collision_layer = 5
+script = ExtResource("1_6yb1w")
+death_effect_scene = ExtResource("3_ya65d")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1610434282]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_nnsnf")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1534417879]
+shape = SubResource("RectangleShape2D_aqu4p")
+
+[node name="Timer" type="Timer" parent="." unique_id=1211394925]
+autostart = true
+
+[node name="LaserGlow" type="Line2D" parent="." unique_id=391329886]
+material = SubResource("CanvasItemMaterial_e0v5u")
+width = 50.0
+texture = SubResource("GradientTexture2D_u1brx")
+texture_mode = 1
+
+[node name="LaserLine" type="Line2D" parent="." unique_id=528281033]
+material = SubResource("CanvasItemMaterial_ebgpr")
+width = 2.0
+
+[node name="LaserRay" type="RayCast2D" parent="." unique_id=623850024]
+target_position = Vector2(1000, 0)
+collision_mask = 5
+
+[node name="GlowLight" type="PointLight2D" parent="." unique_id=1570478200]
+texture = SubResource("GradientTexture2D_lfw1v")
+
+[node name="ImpactLight" type="PointLight2D" parent="." unique_id=225526240]
+energy = 0.0
+texture = SubResource("GradientTexture2D_ya65d")

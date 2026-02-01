@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://bqywkhfmeox84"]
 
 [ext_resource type="Script" uid="uid://1lkfd8mnlq7j" path="res://characters/player/player.gd" id="1_508ok"]
+[ext_resource type="Texture2D" uid="uid://vx5l6rjc027a" path="res://assets/icons/ffffff/transparent/1x1/delapouite/devil-mask.png" id="2_c6leb"]
 [ext_resource type="Script" uid="uid://clqpibr4aj0df" path="res://characters/player/gun.gd" id="2_xxgcw"]
+[ext_resource type="Texture2D" uid="uid://dp5oalg1ik1p8" path="res://assets/icons/ffffff/transparent/1x1/skoll/gas-mask.png" id="3_dirf7"]
 [ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="3_exd8k"]
+[ext_resource type="Texture2D" uid="uid://c6cts4g6svjgc" path="res://assets/icons/ffffff/transparent/1x1/delapouite/plague-doctor-profile.png" id="4_idpv6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_508ok"]
 size = Vector2(35, 35)
@@ -19,8 +22,23 @@ fill_to = Vector2(0, 0.008695652)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xxgcw"]
 size = Vector2(20, 3)
 
-[node name="Player" type="CharacterBody2D" unique_id=708763606]
+[sub_resource type="Gradient" id="Gradient_c6leb"]
+colors = PackedColorArray(1, 1, 0.79607844, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dirf7"]
+gradient = SubResource("Gradient_c6leb")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Player" type="CharacterBody2D" unique_id=708763606 groups=["Player"]]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_508ok")
+red_mask_texture = ExtResource("2_c6leb")
+green_mask_texture = ExtResource("3_dirf7")
+blue_mask_texture = ExtResource("4_idpv6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2140316450]
 shape = SubResource("RectangleShape2D_508ok")
@@ -43,3 +61,6 @@ texture = SubResource("PlaceholderTexture2D_xxgcw")
 
 [node name="Muzzle" type="Marker2D" parent="Gun" unique_id=1766663109]
 position = Vector2(27, 0)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=18237873]
+texture = SubResource("GradientTexture2D_dirf7")

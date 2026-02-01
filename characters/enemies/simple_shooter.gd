@@ -13,8 +13,7 @@ var enemy_color: ColorState = ColorState.RED
 @export var color_pattern: Array[ColorState] = [
 	ColorState.RED, 
 	ColorState.RED, 
-	ColorState.GREEN, 
-	ColorState.BLUE
+	ColorState.RED
 ]
 
 # ... (Keep Burst Settings as they are) ...
@@ -33,7 +32,10 @@ var enemy_color: ColorState = ColorState.RED
 @export_category("Effects")
 @export var death_effect_scene: PackedScene
 
-var health: int = 1
+@export_category("Stats")
+@export var score_value: int = 100  # How many points this enemy is worth
+
+var health: int = 3
 var current_pattern_index: int = 0
 
 func _ready() -> void:
@@ -69,14 +71,20 @@ func telegraph_shot() -> void:
 
 # UPDATED: Spawns particles
 func die() -> void:
-	# DEBUG: Check if the scene is actually assigned
-	if death_effect_scene == null:
-		print("ERROR: death_effect_scene is NULL! I cannot explode.")
-	else:
-		print("Spawning effect...")
+	# 1. Add Score to the Global Manager
+	# Ensure GameManager is an Autoload (Singleton) for this to work
+	if GameManager:
+		GameManager.add_score(score_value)
+		print("Score added: ", score_value)
+
+	# 2. Spawn Effects (Your existing logic)
+	if death_effect_scene:
 		var effect = death_effect_scene.instantiate()
 		effect.global_position = global_position
+		effect.modulate = sprite.modulate 
 		get_parent().add_child(effect)
+	else:
+		print("ERROR: death_effect_scene is NULL!")
 
 	queue_free()
 

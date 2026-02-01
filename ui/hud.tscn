@@ -11,13 +11,112 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Colors" type="Label" parent="Control" unique_id=785623749]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=606516924]
 layout_mode = 0
-offset_right = 97.0
-offset_bottom = 23.0
+offset_left = 1.0
+offset_top = 31.0
+offset_right = 98.0
+offset_bottom = 81.0
+
+[node name="Colors" type="Label" parent="Control/VBoxContainer" unique_id=785623749]
+layout_mode = 2
 text = "G > R > B > G"
 
-[node name="ScoreLabel" type="Label" parent="Control" unique_id=1022811875]
+[node name="ScoreLabel" type="Label" parent="Control/VBoxContainer" unique_id=1022811875]
+layout_mode = 2
+
+[node name="HealthContainer" type="HBoxContainer" parent="Control" unique_id=1948999555]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_right = 10.0
+offset_bottom = 10.0
+theme_override_constants/separation = 2
+
+[node name="DeathScreen" type="Control" parent="." unique_id=1938613961]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="DeathScreen" unique_id=998410478]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DeathScreen" unique_id=1972359853]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="DeathScreen/VBoxContainer" unique_id=954943300]
+layout_mode = 2
+text = "YOU DIED"
+
+[node name="FinalScoreLabel" type="Label" parent="DeathScreen/VBoxContainer" unique_id=1529540741]
+layout_mode = 2
+text = "Score: 0"
+
+[node name="RestartButton" type="Button" parent="DeathScreen/VBoxContainer" unique_id=350366359]
+layout_mode = 2
+text = "Try Again"
+
+[node name="VictoryScreen" type="Control" parent="." unique_id=1393620433]
+process_mode = 3
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="VictoryScreen" unique_id=1127214619]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.56078434, 0, 0.49803922)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VictoryScreen" unique_id=1023817487]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VictoryScreen/VBoxContainer" unique_id=1200136127]
+layout_mode = 2
+text = "LEVEL CLEARED!"
+
+[node name="FinalScoreLabel" type="Label" parent="VictoryScreen/VBoxContainer" unique_id=269027653]
+layout_mode = 2
+text = "Score: 0"
+
+[node name="NextLevelButton" type="Button" parent="VictoryScreen/VBoxContainer" unique_id=349964051]
+layout_mode = 2
+text = "Next Level"
