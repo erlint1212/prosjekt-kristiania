@@ -7,6 +7,16 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
 
+[sub_resource type="Gradient" id="Gradient_u1brx"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cx0x3"]
+gradient = SubResource("Gradient_u1brx")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="ShotgunEnemy" type="CharacterBody2D" unique_id=627157932 groups=["Enemies"]]
 collision_layer = 5
 script = ExtResource("1_7dq22")
@@ -26,3 +36,6 @@ position = Vector2(-41, 0)
 
 [node name="Timer" type="Timer" parent="." unique_id=1211394925]
 autostart = true
+
+[node name="GlowLight" type="PointLight2D" parent="." unique_id=1698416791]
+texture = SubResource("GradientTexture2D_cx0x3")

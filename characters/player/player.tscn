@@ -22,6 +22,16 @@ fill_to = Vector2(0, 0.008695652)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_xxgcw"]
 size = Vector2(20, 3)
 
+[sub_resource type="Gradient" id="Gradient_c6leb"]
+colors = PackedColorArray(1, 1, 0.79607844, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dirf7"]
+gradient = SubResource("Gradient_c6leb")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="Player" type="CharacterBody2D" unique_id=708763606 groups=["Player"]]
 collision_layer = 4
 collision_mask = 3
@@ -51,3 +61,6 @@ texture = SubResource("PlaceholderTexture2D_xxgcw")
 
 [node name="Muzzle" type="Marker2D" parent="Gun" unique_id=1766663109]
 position = Vector2(27, 0)
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=18237873]
+texture = SubResource("GradientTexture2D_dirf7")

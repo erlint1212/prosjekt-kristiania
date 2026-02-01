@@ -4438,4 +4438,7 @@ position = Vector2(362, -596)
 [node name="ShotgunEnemy3" parent="." unique_id=1109595350 instance=ExtResource("8_j0sdw")]
 position = Vector2(783, -590)
 
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=598304165]
+color = Color(2.1658838e-07, 0, 0.22171634, 1)
+
 [connection signal="level_completed" from="Flag" to="." method="_on_flag_level_completed"]

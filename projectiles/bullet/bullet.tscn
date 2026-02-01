@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dfsewt2enpqsq" path="res://projectiles/bullet/bullet.gd" id="1_hwob3"]
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hwob3"]
+light_mode = 1
+
 [sub_resource type="Gradient" id="Gradient_hwob3"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
@@ -13,6 +16,15 @@ height = 10
 [sub_resource type="CircleShape2D" id="CircleShape2D_jlt5a"]
 radius = 5.0
 
+[sub_resource type="Gradient" id="Gradient_1mdu2"]
+offsets = PackedFloat32Array(0.018072288, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_g1w5t"]
+gradient = SubResource("Gradient_1mdu2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="Bullet" type="Area2D" unique_id=594981839]
 position = Vector2(3, 0)
 collision_layer = 16
@@ -20,6 +32,7 @@ collision_mask = 13
 script = ExtResource("1_hwob3")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=22638521]
+material = SubResource("CanvasItemMaterial_hwob3")
 position = Vector2(2, 0)
 texture = SubResource("GradientTexture2D_1mdu2")
 
@@ -27,3 +40,7 @@ texture = SubResource("GradientTexture2D_1mdu2")
 shape = SubResource("CircleShape2D_jlt5a")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=419601868]
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1379000128]
+energy = 1.5
+texture = SubResource("GradientTexture2D_g1w5t")

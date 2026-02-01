@@ -1,6 +1,5 @@
 extends Area2D
 
-# Define the same enum as the player/enemy
 enum ColorState { RED, GREEN, BLUE }
 
 @export var speed: float = 400.0
@@ -9,22 +8,26 @@ enum ColorState { RED, GREEN, BLUE }
 
 var direction: Vector2 = Vector2.RIGHT
 var reflected: bool = false
-var shooter: Node2D # The character who fired (or reflected) this bullet
+var shooter: Node2D 
 
 @onready var sprite: Sprite2D = $Sprite2D
+# NEW: Reference the light
+@onready var light: PointLight2D = $PointLight2D
 
 func _ready() -> void:
-	# 1. Set visual color
+	# 1. Set visual color AND light color
+	var c = Color.WHITE
 	match bullet_color:
-		ColorState.RED: sprite.modulate = Color.RED
-		ColorState.GREEN: sprite.modulate = Color.GREEN
-		ColorState.BLUE: sprite.modulate = Color.BLUE
+		ColorState.RED: c = Color(1.5, 0.2, 0.2) # HDR Red
+		ColorState.GREEN: c = Color(0.2, 1.5, 0.2) # HDR Green
+		ColorState.BLUE: c = Color(0.2, 0.2, 1.5) # HDR Blue
 	
-	# 2. Cleanup when off-screen (requires VisibleOnScreenNotifier2D child node)
+	sprite.modulate = c
+	if light: light.color = c
+	
 	if has_node("VisibleOnScreenNotifier2D"):
 		$VisibleOnScreenNotifier2D.screen_exited.connect(queue_free)
 	
-	# 3. Connect collision
 	body_entered.connect(_on_body_entered)
 
 func _physics_process(delta: float) -> void:

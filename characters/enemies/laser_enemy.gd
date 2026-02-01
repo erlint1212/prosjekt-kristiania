@@ -26,6 +26,9 @@ enum ColorState { RED, GREEN, BLUE }
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var timer: Timer = $Timer
 
+@onready var glow_light: PointLight2D = $GlowLight # The enemy body glow
+@onready var impact_light: PointLight2D = $ImpactLight # The laser hit glow
+
 # --- STATE MACHINE ---
 enum State { IDLE, TELEGRAPH, LOCKED, FIRING }
 var current_state: State = State.IDLE
@@ -142,6 +145,25 @@ func update_laser_visuals(width: float, opacity: float, brightness: float, glow_
 	if is_being_reflected:
 		laser_line.add_point(start_point) 
 		laser_glow.add_point(start_point)
+
+	# --- NEW LIGHTING LOGIC ---
+	
+	# 1. Body Glow Logic (Pulsing with the laser state)
+	# When opacity is high (attacking), make the body glow brighter
+	glow_light.energy = 0.5 + (brightness * 0.5) 
+	glow_light.color = get_color_value(enemy_color)
+
+	# 2. Impact Light Logic
+	if laser_ray.is_colliding():
+		end_point = to_local(laser_ray.get_collision_point())
+		# Turn light ON if hitting something
+		impact_light.enabled = true
+		impact_light.position = end_point
+		impact_light.color = get_color_value(enemy_color)
+		impact_light.energy = brightness # Scales with attack state (dim -> bright)
+	else:
+		# Turn light OFF if shooting into void
+		impact_light.enabled = false
 
 func check_laser_collision() -> void:
 	if not laser_ray.is_colliding():

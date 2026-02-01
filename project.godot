@@ -73,3 +73,4 @@ move_down={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+environment/defaults/default_clear_color=Color(1.504086e-07, 0, 0.15702274, 1)
