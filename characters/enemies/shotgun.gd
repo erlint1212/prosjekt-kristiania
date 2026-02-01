@@ -42,7 +42,7 @@ enum AttackType { BURST, SHOTGUN }
 
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 var health: int = 3
 var current_pattern_index: int = 0 # Tracks position in the color_pattern array
@@ -57,6 +57,7 @@ func _ready() -> void:
 	timer.wait_time = burst_reload_time
 	timer.start()
 	timer.timeout.connect(_on_timer_timeout)
+	sprite.play("idle")
 
 func _on_timer_timeout() -> void:
 	# When timer hits 0, fire a whole burst
@@ -72,7 +73,7 @@ func _on_timer_timeout() -> void:
 	elif idx < 0 or idx >= attack_types.size():
 		idx = 0
 
-	var attack: AttackType = int(attack_types[idx])
+	var attack := int(attack_types[idx]) as AttackType
 
 	match attack:
 		AttackType.BURST:
@@ -135,10 +136,10 @@ func shoot_next_bullet(dir: Vector2) -> void:
 	if color_pattern.is_empty(): return
 
 	# 1. Determine which color to use from the pattern
-	var chosen_color: ColorState = int(color_pattern[current_pattern_index])
+	var chosen_color: = int(color_pattern[current_pattern_index]) as ColorState
 	# 2. Update the Enemy's visual color to match what it just shot
 	update_visual_color(chosen_color)
-
+	
 	# 3. Create and Fire Bullet
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = muzzle.global_position

@@ -24,9 +24,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y += gravity * delta
 
 	# 1. JUMP (Mapped to 'W' in Input Map)
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = jump_velocity
-
+	if is_on_floor():
+		if Input.is_action_just_pressed("jump"):
+			velocity.y = jump_velocity
+	else:
+		if Input.is_action_just_released("jump") and velocity.y < jump_velocity / 2:
+			velocity.y = jump_velocity / 2
+	
 	# 2. LEFT/RIGHT (Mapped to 'A' and 'D' in Input Map)
 	var direction = Input.get_axis("move_left", "move_right")
 	
