@@ -38,24 +38,24 @@ var player_ref: Node2D = null
 var is_being_reflected: bool = false
 
 func _ready() -> void:
+	# 1. Find Player
 	var players = get_tree().get_nodes_in_group("Player")
 	if players.size() > 0:
 		player_ref = players[0]
 	
+	# 2. Setup Nodes
 	laser_line.visible = false
+	laser_glow.visible = false 
 	laser_ray.enabled = true
 	
+	# 3. Setup Timer
 	timer.wait_time = reload_time
 	timer.start()
-	timer.timeout.connect(start_attack_sequence)
-	laser_line.visible = false
-	laser_glow.visible = false # Hide glow initially too
-	laser_ray.enabled = true
 	
-	timer.wait_time = reload_time
-	timer.start()
-	timer.timeout.connect(start_attack_sequence)
-
+	# 4. Connect Signal (Safe Check)
+	if not timer.timeout.is_connected(start_attack_sequence):
+		timer.timeout.connect(start_attack_sequence)
+		
 func _physics_process(delta: float) -> void:
 	is_being_reflected = false
 	
