@@ -221,7 +221,7 @@ func check_laser_collision() -> void:
 				take_damage(3) # Reflects back and kills enemy
 				has_dealt_damage = true
 			
-		# 2. DAMAGE: Different Color
+		# 2. DAMAGE: Different Colord
 		else:
 			if not has_dealt_damage:
 				if player.has_method("take_damage"):
