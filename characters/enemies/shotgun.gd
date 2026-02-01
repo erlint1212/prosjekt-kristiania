@@ -59,7 +59,7 @@ var player_ref: Node2D = null
 
 func _ready() -> void:
 	rng.randomize()
-  sprite.play("idle")
+	sprite.play("idle")
 
 	original_scale = sprite.scale
 	

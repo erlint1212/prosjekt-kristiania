@@ -4,8 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="2_cx0x3"]
 [ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="3_kq6yk"]
 [ext_resource type="PackedScene" uid="uid://bbyrkgweo14p" path="res://effects/EnemyDeathEffect.tscn" id="3_rp2o2"]
+[ext_resource type="Texture2D" uid="uid://cc6he03uapu6m" path="res://assets/Idle-White-Slime.png" id="3_tpks8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
+size = Vector2(34, 34)
 
 [sub_resource type="Gradient" id="Gradient_u1brx"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -17,6 +19,49 @@ height = 128
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_kq6yk"]
+atlas = ExtResource("3_tpks8")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rp2o2"]
+atlas = ExtResource("3_tpks8")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3h1vs"]
+atlas = ExtResource("3_tpks8")
+region = Rect2(80, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dk2qi"]
+atlas = ExtResource("3_tpks8")
+region = Rect2(96, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1tnqu"]
+atlas = ExtResource("3_tpks8")
+region = Rect2(112, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cc8yn"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kq6yk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rp2o2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3h1vs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dk2qi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1tnqu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
 [node name="ShotgunEnemy" type="CharacterBody2D" unique_id=627157932 groups=["Enemies"]]
 collision_layer = 5
 script = ExtResource("1_7dq22")
@@ -24,6 +69,7 @@ bullet_scene = ExtResource("2_cx0x3")
 death_effect_scene = ExtResource("3_rp2o2")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1610434282]
+visible = false
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_kq6yk")
 flip_h = true
@@ -39,3 +85,10 @@ autostart = true
 
 [node name="GlowLight" type="PointLight2D" parent="." unique_id=1698416791]
 texture = SubResource("GradientTexture2D_cx0x3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1746065506]
+texture_filter = 1
+scale = Vector2(2.6, 2.6)
+sprite_frames = SubResource("SpriteFrames_cc8yn")
+animation = &"idle"
+frame_progress = 0.92973775

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://bwg4sy1661mly"]
+[gd_scene format=3 uid="uid://demekt68hr2tk"]
 
 [ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="1_aqu4p"]
 [ext_resource type="Script" uid="uid://ccfo6au8asijq" path="res://characters/enemies/aiming_enemy.gd" id="1_g1dvk"]

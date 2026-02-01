@@ -23,7 +23,7 @@ enum ColorState { RED, GREEN, BLUE }
 @onready var laser_ray: RayCast2D = $LaserRay
 @onready var laser_line: Line2D = $LaserLine
 @onready var laser_glow: Line2D = $LaserGlow 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var timer: Timer = $Timer
 
 @onready var glow_light: PointLight2D = $GlowLight # The enemy body glow
@@ -53,6 +53,7 @@ func _ready() -> void:
 	
 	timer.wait_time = reload_time
 	timer.start()
+	sprite.play("idle")
 	
 	if not timer.timeout.is_connected(start_attack_sequence):
 		timer.timeout.connect(start_attack_sequence)

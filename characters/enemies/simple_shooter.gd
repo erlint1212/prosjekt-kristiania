@@ -24,7 +24,7 @@ var enemy_color: ColorState = ColorState.RED
 
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @export_category("Telegraph Settings")
 @export var telegraph_time: float = 0.4 
@@ -42,6 +42,7 @@ func _ready() -> void:
 	timer.wait_time = reload_time
 	timer.start()
 	timer.timeout.connect(_on_timer_timeout)
+	sprite.play("idle")
 
 func _on_timer_timeout() -> void:
 	fire_burst()
