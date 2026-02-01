@@ -175,27 +175,21 @@ func check_laser_collision() -> void:
 	if collider.is_in_group("Player"):
 		var player = collider
 		
-		# 1. CHECK REFLECTION 
+		# Get Player Color
 		var player_color = player.current_color_state if "current_color_state" in player else -1
 		
-		var is_reflect_match = false
-		match enemy_color:
-			ColorState.RED:   is_reflect_match = (player_color == ColorState.GREEN)
-			ColorState.GREEN: is_reflect_match = (player_color == ColorState.BLUE)
-			ColorState.BLUE:  is_reflect_match = (player_color == ColorState.RED)
+		# --- NEW RULES ---
 		
-		if is_reflect_match:
-			# REFLECTION VISUALS (Always happen every frame to look good)
+		# 1. REFLECTION: Same Color
+		if player_color == enemy_color:
 			is_being_reflected = true
 			
-			# REFLECTION DAMAGE (Only happen ONCE per burst)
 			if not has_dealt_damage:
-				take_damage(3) # Kill self (or take 3 damage)
+				take_damage(3) # Reflects back and kills enemy
 				has_dealt_damage = true
 			
-		# 2. CHECK DAMAGE (If not reflected)
-		elif player_color != enemy_color:
-			# DAMAGE PLAYER (Only happen ONCE per burst)
+		# 2. DAMAGE: Different Color
+		else:
 			if not has_dealt_damage:
 				if player.has_method("take_damage"):
 					player.take_damage(damage)

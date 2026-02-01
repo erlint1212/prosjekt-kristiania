@@ -11,16 +11,15 @@ var reflected: bool = false
 var shooter: Node2D 
 
 @onready var sprite: Sprite2D = $Sprite2D
-# NEW: Reference the light
 @onready var light: PointLight2D = $PointLight2D
 
 func _ready() -> void:
-	# 1. Set visual color AND light color
+	# 1. Set visual color
 	var c = Color.WHITE
 	match bullet_color:
-		ColorState.RED: c = Color(1.5, 0.2, 0.2) # HDR Red
-		ColorState.GREEN: c = Color(0.2, 1.5, 0.2) # HDR Green
-		ColorState.BLUE: c = Color(0.2, 0.2, 1.5) # HDR Blue
+		ColorState.RED: c = Color(1.5, 0.2, 0.2)
+		ColorState.GREEN: c = Color(0.2, 1.5, 0.2)
+		ColorState.BLUE: c = Color(0.2, 0.2, 1.5)
 	
 	sprite.modulate = c
 	if light: light.color = c
@@ -34,68 +33,58 @@ func _physics_process(delta: float) -> void:
 	position += direction * speed * delta
 
 func _on_body_entered(body: Node2D) -> void:
-	# Ignore the person who shot this bullet so you don't hit yourself
+	# Ignore the shooter (or the person who just reflected it)
 	if body == shooter: 
 		return
 	
-	# If we hit a Wall/Floor
+	# Wall Collision
 	if body is TileMapLayer:
 		queue_free()
 		return
 
-	# If we hit a Character (Player OR Enemy)
-	# We check if they have the color property (Player uses 'current_color_state', Enemy uses 'enemy_color')
+	# Character Collision (Player OR Enemy)
 	if "current_color_state" in body or "enemy_color" in body:
 		handle_character_collision(body)
 
 func handle_character_collision(target: Node2D) -> void:
-	# Normalize property names
+	# 1. Get Target Color
 	var target_color = null
 	if "current_color_state" in target:
 		target_color = target.current_color_state
 	elif "enemy_color" in target:
 		target_color = target.enemy_color
 	
-	# --- NEW LOGIC STARTS HERE ---
+	# --- NEW RULES START ---
 	
-	# 1. SPECIAL RULE: If this is an Enemy and the bullet is Reflected, ALWAYS DAMAGE.
-	# We skip the color math because the player already did the work to reflect it.
+	# 2. SPECIAL: If Enemy is hit by a Reflected bullet, they take damage regardless of color
+	# (Optional: keep this if you want reflected shots to always kill, otherwise remove)
 	if reflected and "enemy_color" in target:
 		if target.has_method("take_damage"):
 			target.take_damage(damage)
 		queue_free()
 		return
-	
-	# --- NEW LOGIC ENDS HERE ---
-	
-	# 2. Standard Logic (Player getting hit, or un-reflected bullets)
+
+	# 3. REFLECTION: Same Color = Reflect
 	if target_color == bullet_color:
-		return # Phase through
-
-	# Check reflection conditions (Rock Paper Scissors)
-	var is_reflect_match = false
-	match bullet_color:
-		ColorState.RED:   is_reflect_match = (target_color == ColorState.GREEN)
-		ColorState.GREEN: is_reflect_match = (target_color == ColorState.BLUE)
-		ColorState.BLUE:  is_reflect_match = (target_color == ColorState.RED)
-
-	if is_reflect_match:
 		reflect_bullet(target)
-	else:
-		# Deal damage (Player getting hit)
-		if target.has_method("take_damage"):
-			target.take_damage(damage)
-		queue_free()
+		return
+
+	# 4. DAMAGE: Different Color = Damage
+	if target.has_method("take_damage"):
+		target.take_damage(damage)
+	
+	queue_free()
+	# --- NEW RULES END ---
 
 func reflect_bullet(new_shooter: Node2D) -> void:
 	if reflected: return
 	
 	reflected = true
 	direction = -direction
-	
-	# CHANGE THIS: Increase speed significantly (e.g., 3x or 4x)
 	speed *= 3.0 
 	
 	shooter = new_shooter
+	# Ensure it can hit everything now
 	set_collision_mask_value(1, true)
 	set_collision_mask_value(3, true)
+	set_collision_mask_value(4, true)

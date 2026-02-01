@@ -10,7 +10,9 @@ var current_color_state: ColorState = ColorState.RED
 
 @onready var sprite_visual: Sprite2D = $Sprite2D
 
-# NEW: Drag your PNGs here in the Inspector
+# NEW: Track the damage tween so we can cancel it
+var damage_tween: Tween
+
 @export_category("Mask Visuals")
 @export var red_mask_texture: Texture2D
 @export var green_mask_texture: Texture2D
@@ -18,7 +20,7 @@ var current_color_state: ColorState = ColorState.RED
 
 # --- STATS ---
 @export_category("Stats")
-@export var max_health: int = 5
+@export var max_health: int = 10
 @onready var current_health: int = max_health
 
 @export_category("Movement Stats")
@@ -26,12 +28,11 @@ var current_color_state: ColorState = ColorState.RED
 @export var jump_velocity: float = -400.0
 @export var fast_fall_multiplier: float = 4.0
 
-@export var mask_size: Vector2 = Vector2(40, 40) # The target size in pixels
+@export var mask_size: Vector2 = Vector2(40, 40) 
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _ready() -> void:
-	# Initialize HUD
 	health_changed.emit(current_health, max_health)
 	change_color(ColorState.RED)
 
@@ -42,13 +43,12 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.y += gravity * delta
 
-	# DROP DOWN LOGIC
-	# Check if on floor, holding DOWN, and pressed JUMP
+	# DROP DOWN
 	if is_on_floor() and Input.is_action_pressed("move_down") and Input.is_action_just_pressed("jump"):
-		position.y += 1 # Push player 1 pixel into the platform so physics lets them fall
-		return # Skip the normal jump logic
+		position.y += 1 
+		return 
 
-	# NORMAL JUMP
+	# JUMP
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 
@@ -70,6 +70,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			change_color(ColorState.BLUE)
 
 func change_color(new_state: ColorState) -> void:
+	# 1. STOP FLASHING: If we change masks, kill the damage animation immediately
+	# so the new color sticks.
+	if damage_tween and damage_tween.is_valid():
+		damage_tween.kill()
+	
 	current_color_state = new_state
 	
 	match current_color_state:
@@ -86,32 +91,30 @@ func change_color(new_state: ColorState) -> void:
 			apply_texture(blue_mask_texture)
 
 func apply_texture(tex: Texture2D) -> void:
-	# 1. Safety Check: If no texture is assigned, don't crash
-	if tex == null:
-		return
-		
-	# 2. Assign the texture
+	if tex == null: return
 	sprite_visual.texture = tex
-	
-	# 3. Calculate the correct scale
-	# Formula: Target Size / Actual Image Size
 	var tex_size = tex.get_size()
-	
-	# Option A: Stretch to fit exactly 40x40 (might distort shape)
 	sprite_visual.scale = mask_size / tex_size
-	
-	# Option B: Keep Aspect Ratio (Fit INSIDE 40x40 box) - Uncomment if prefered
-	# var scale_factor = min(mask_size.x / tex_size.x, mask_size.y / tex_size.y)
-	# sprite_visual.scale = Vector2(scale_factor, scale_factor)
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
 	health_changed.emit(current_health, max_health)
 	print("Player took damage: ", amount, " | Health: ", current_health)
 	
-	var tween = create_tween()
-	tween.tween_property(sprite_visual, "modulate", Color.WHITE, 0.1)
-	tween.tween_property(sprite_visual, "modulate", get_current_color_value(), 0.1)
+	# 2. SAVE TWEEN REFERENCE
+	# We assign the tween to a variable so 'change_color' can access it.
+	if damage_tween and damage_tween.is_valid():
+		damage_tween.kill() # Kill previous damage flash if taking damage rapidly
+		
+	damage_tween = create_tween()
+	
+	# Step 1: Flash White
+	damage_tween.tween_property(sprite_visual, "modulate", Color.WHITE, 0.1)
+	
+	# Step 2: Return to CURRENT color
+	# Note: We must call get_current_color_value() here to bake the correct color 
+	# into the animation at this moment.
+	damage_tween.tween_property(sprite_visual, "modulate", get_current_color_value(), 0.1)
 
 	if current_health <= 0:
 		die()

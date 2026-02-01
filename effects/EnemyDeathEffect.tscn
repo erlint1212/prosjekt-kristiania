@@ -3,14 +3,14 @@
 [ext_resource type="Script" uid="uid://cqcosbd1mbph" path="res://effects/enemy_death_effect.gd" id="1_q7qkl"]
 
 [sub_resource type="Gradient" id="Gradient_q7qkl"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_vq1d3"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q7qkl"]
-width = 5
-height = 5
-noise = SubResource("FastNoiseLite_vq1d3")
-color_ramp = SubResource("Gradient_q7qkl")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vq1d3"]
+gradient = SubResource("Gradient_q7qkl")
+width = 8
+height = 8
+fill = 1
+fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kpr0e"]
 particle_flag_disable_z = true
@@ -23,12 +23,25 @@ gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 5.0
 
+[sub_resource type="Gradient" id="Gradient_c6leb"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q7qkl"]
+gradient = SubResource("Gradient_c6leb")
+width = 16
+height = 16
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="EnemyDeathEffect" type="GPUParticles2D" unique_id=1460487420]
 z_index = 10
 emitting = false
 amount = 20
-texture = SubResource("NoiseTexture2D_q7qkl")
+texture = SubResource("GradientTexture2D_vq1d3")
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_kpr0e")
 script = ExtResource("1_q7qkl")
+
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1919054934]
+texture = SubResource("GradientTexture2D_q7qkl")
