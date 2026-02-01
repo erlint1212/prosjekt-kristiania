@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b23ru0btwyha8"]
+
+[ext_resource type="Script" uid="uid://bgbmfmfq655d1" path="res://items/flag.gd" id="1_2k6nh"]
+[ext_resource type="Texture2D" uid="uid://qc4eq8cpo1im" path="res://assets/tileset/Tilesheet/colored-transparent_packed.png" id="2_xi5co"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2k6nh"]
+
+[node name="Flag" type="Area2D" unique_id=1549655090]
+collision_layer = 32
+collision_mask = 4
+script = ExtResource("1_2k6nh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1349462135]
+shape = SubResource("RectangleShape2D_2k6nh")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=460694186]
+scale = Vector2(2, 2)
+texture = ExtResource("2_xi5co")
+region_enabled = true
+region_rect = Rect2(272, 112, 16, 16)

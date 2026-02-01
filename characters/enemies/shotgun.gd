@@ -5,8 +5,10 @@ enum AttackType { BURST, SHOTGUN }
 
 @export_category("Combat Settings")
 @export var bullet_scene: PackedScene
-@export var shoot_direction: Vector2 = Vector2.LEFT
-@export var score_value: int = 500 # Added Score!
+# remove "shoot_direction" export if you want it purely automatic, 
+# or keep it as a default if no player is found.
+@export var shoot_direction: Vector2 = Vector2.LEFT 
+@export var score_value: int = 500 
 
 @export var color_pattern: Array[ColorState] = [
 	ColorState.RED, 
@@ -46,28 +48,46 @@ enum AttackType { BURST, SHOTGUN }
 @onready var timer: Timer = $Timer
 @onready var sprite: Sprite2D = $Sprite2D
 
-var health: int = 5 # Increased health for a tougher enemy
+var health: int = 5 
 var current_pattern_index: int = 0
 var rng: = RandomNumberGenerator.new()
 var is_attacking: = false
 var original_scale: Vector2
 
+# NEW: Reference to the player
+var player_ref: Node2D = null
+
 func _ready() -> void:
 	rng.randomize()
-	
 	original_scale = sprite.scale
 	
-	timer.wait_time = burst_reload_time
+	# NEW: Find the player
+	var players = get_tree().get_nodes_in_group("Player")
+	if players.size() > 0:
+		player_ref = players[0]
 	
-	# FIX: Prevent "Signal already connected" error
+	timer.wait_time = burst_reload_time
 	if not timer.timeout.is_connected(_on_timer_timeout):
 		timer.timeout.connect(_on_timer_timeout)
 		
 	timer.start()
 	
-	# Initialize Color
 	if not color_pattern.is_empty():
 		update_visual_color(color_pattern[0])
+
+func _physics_process(delta: float) -> void:
+	# NEW: Always aim at the player if they exist
+	if player_ref:
+		# Calculate direction to player
+		shoot_direction = (player_ref.global_position - global_position).normalized()
+		
+		# Optional: Rotate sprite to face player
+		# sprite.rotation = shoot_direction.angle() 
+		# OR just flip horizontally if you prefer simpler look:
+		if shoot_direction.x < 0:
+			sprite.flip_h = false # Facing Left (assuming default sprite faces left)
+		else:
+			sprite.flip_h = true
 
 func _on_timer_timeout() -> void:
 	if is_attacking: return
@@ -84,7 +104,6 @@ func _on_timer_timeout() -> void:
 		AttackType.BURST:
 			await fire_burst()
 		AttackType.SHOTGUN:
-			# CHANGED: Added 'await' so we wait for the charge-up animation
 			await fire_shotgun() 
 
 	_schedule_next_attack(get_attack_cooldown(idx))
@@ -97,7 +116,12 @@ func _on_timer_timeout() -> void:
 func fire_burst() -> void:
 	print("Burst fired")
 	for i in range(burst_count):
-		shoot_next_bullet(shoot_direction.normalized())
+		# Re-calculate direction per shot so it tracks moving players!
+		var current_aim = shoot_direction
+		if player_ref:
+			current_aim = (player_ref.global_position - global_position).normalized()
+			
+		shoot_next_bullet(current_aim)
 		await get_tree().create_timer(shot_delay).timeout
 
 func fire_shotgun() -> void:
@@ -111,25 +135,24 @@ func fire_shotgun() -> void:
 	update_visual_color(chosen_color)
 	
 	var tween = create_tween()
-	# 1. Grow larger (1.5x original size)
 	tween.tween_property(sprite, "scale", original_scale * 1.5, charge_time).set_trans(Tween.TRANS_CUBIC)
 	
-	# 2. Glow Brighter (using raw values > 1 for HDR glow)
-	# We mix the current color with pure white brightness
 	var glow_color = get_color_value(chosen_color)
 	glow_color.r += 1.0 
 	glow_color.g += 1.0
 	glow_color.b += 1.0
 	tween.parallel().tween_property(sprite, "modulate", glow_color, charge_time)
 	
-	# Wait for the animation to finish
 	await tween.finished
 	# --- TELEGRAPH END ---
 
 	print("BLAST!")
 	
-	# --- FIRE LOGIC (Existing Code) ---
+	# UPDATED: Use current aim at the moment of firing
 	var base_dir: Vector2 = shoot_direction.normalized()
+	if player_ref:
+		base_dir = (player_ref.global_position - global_position).normalized()
+		
 	var count: int = max(1, bullet_count)
 	var half: float = spread_angle_deg * 0.5
 
@@ -142,15 +165,12 @@ func fire_shotgun() -> void:
 			var dir: Vector2 = base_dir.rotated(deg_to_rad(angle_deg)).normalized()
 			spawn_bullet(dir, chosen_color)
 
-	# Advance pattern
 	current_pattern_index = (current_pattern_index + 1) % color_pattern.size()
 	
-	# --- RECOIL / RESET ---
-	# Snap back to normal size quickly
 	var reset_tween = create_tween()
 	reset_tween.tween_property(sprite, "scale", original_scale, 0.1).set_trans(Tween.TRANS_BOUNCE)
 	reset_tween.parallel().tween_property(sprite, "modulate", get_color_value(color_pattern[current_pattern_index]), 0.1)
-	
+
 # -------------------------
 # Bullet spawning
 # -------------------------
@@ -163,10 +183,7 @@ func shoot_next_bullet(dir: Vector2) -> void:
 
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = muzzle.global_position
-	
-	# FIX: Actually use the 'dir' parameter passed to the function!
 	bullet.direction = dir 
-	
 	bullet.bullet_color = chosen_color
 	get_parent().add_child(bullet)
 	
@@ -223,7 +240,6 @@ func get_color_value(state: ColorState) -> Color:
 
 func take_damage(amount: int) -> void:
 	health -= amount
-	# Flash White
 	var tween = create_tween()
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
 	var next_color = color_pattern[current_pattern_index] 
@@ -232,7 +248,6 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		die()
 
-# FIX: Added missing die function
 func die() -> void:
 	if GameManager:
 		GameManager.add_score(score_value)

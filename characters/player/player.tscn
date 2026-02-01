@@ -23,6 +23,8 @@ fill_to = Vector2(0, 0.008695652)
 size = Vector2(20, 3)
 
 [node name="Player" type="CharacterBody2D" unique_id=708763606 groups=["Player"]]
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_508ok")
 red_mask_texture = ExtResource("2_c6leb")
 green_mask_texture = ExtResource("3_dirf7")

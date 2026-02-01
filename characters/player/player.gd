@@ -42,6 +42,13 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.y += gravity * delta
 
+	# DROP DOWN LOGIC
+	# Check if on floor, holding DOWN, and pressed JUMP
+	if is_on_floor() and Input.is_action_pressed("move_down") and Input.is_action_just_pressed("jump"):
+		position.y += 1 # Push player 1 pixel into the platform so physics lets them fall
+		return # Skip the normal jump logic
+
+	# NORMAL JUMP
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
 
