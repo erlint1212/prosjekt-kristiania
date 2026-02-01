@@ -1,8 +1,11 @@
 [gd_scene format=3 uid="uid://bqywkhfmeox84"]
 
 [ext_resource type="Script" uid="uid://1lkfd8mnlq7j" path="res://characters/player/player.gd" id="1_508ok"]
+[ext_resource type="Texture2D" uid="uid://vx5l6rjc027a" path="res://assets/icons/ffffff/transparent/1x1/delapouite/devil-mask.png" id="2_c6leb"]
 [ext_resource type="Script" uid="uid://clqpibr4aj0df" path="res://characters/player/gun.gd" id="2_xxgcw"]
+[ext_resource type="Texture2D" uid="uid://dp5oalg1ik1p8" path="res://assets/icons/ffffff/transparent/1x1/skoll/gas-mask.png" id="3_dirf7"]
 [ext_resource type="PackedScene" uid="uid://b1cvwebdhvjmu" path="res://projectiles/bullet/bullet.tscn" id="3_exd8k"]
+[ext_resource type="Texture2D" uid="uid://c6cts4g6svjgc" path="res://assets/icons/ffffff/transparent/1x1/delapouite/plague-doctor-profile.png" id="4_idpv6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_508ok"]
 size = Vector2(35, 35)
@@ -21,6 +24,9 @@ size = Vector2(20, 3)
 
 [node name="Player" type="CharacterBody2D" unique_id=708763606 groups=["Player"]]
 script = ExtResource("1_508ok")
+red_mask_texture = ExtResource("2_c6leb")
+green_mask_texture = ExtResource("3_dirf7")
+blue_mask_texture = ExtResource("4_idpv6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2140316450]
 shape = SubResource("RectangleShape2D_508ok")
