@@ -33,7 +33,7 @@ enum AttackType { BURST, SHOTGUN }
 ]
 @export var attack_weights: Array[float] = [
 	1.0, # BURST weight
-	0.5  # SHOTGUN weight
+	0.7  # SHOTGUN weight
 ]
 @export var attack_cooldowns: Array[float] = [
 	2.0, # BURST cooldown
@@ -72,7 +72,7 @@ func _on_timer_timeout() -> void:
 	elif idx < 0 or idx >= attack_types.size():
 		idx = 0
 
-	var attack: AttackType = int(attack_types[idx])
+	var attack := int(attack_types[idx]) as AttackType
 
 	match attack:
 		AttackType.BURST:
@@ -135,10 +135,10 @@ func shoot_next_bullet(dir: Vector2) -> void:
 	if color_pattern.is_empty(): return
 
 	# 1. Determine which color to use from the pattern
-	var chosen_color: ColorState = int(color_pattern[current_pattern_index])
+	var chosen_color: = int(color_pattern[current_pattern_index]) as ColorState
 	# 2. Update the Enemy's visual color to match what it just shot
 	update_visual_color(chosen_color)
-
+	
 	# 3. Create and Fire Bullet
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = muzzle.global_position
