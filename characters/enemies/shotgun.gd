@@ -33,7 +33,7 @@ enum AttackType { BURST, SHOTGUN }
 ]
 @export var attack_weights: Array[float] = [
 	1.0, # BURST weight
-	0.7  # SHOTGUN weight
+	0.5  # SHOTGUN weight
 ]
 @export var attack_cooldowns: Array[float] = [
 	2.0, # BURST cooldown
