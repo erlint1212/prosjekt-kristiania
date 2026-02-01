@@ -3,7 +3,11 @@
 [ext_resource type="Script" uid="uid://bdyuqgd0sktdq" path="res://levels/level_01.gd" id="1_81a5f"]
 [ext_resource type="PackedScene" uid="uid://bqywkhfmeox84" path="res://characters/player/player.tscn" id="1_mckh2"]
 [ext_resource type="PackedScene" uid="uid://cihjtbk4yn5bn" path="res://ui/hud.tscn" id="2_81a5f"]
+[ext_resource type="Texture2D" uid="uid://cikfar0iagohx" path="res://assets/tileset/background1.png" id="2_y72ps"]
+[ext_resource type="Texture2D" uid="uid://cv8nonpqxnf36" path="res://assets/tileset/background2.png" id="3_xw3ee"]
+[ext_resource type="Texture2D" uid="uid://bvqqjeis7o5t8" path="res://assets/tileset/background3.png" id="4_l0eo6"]
 [ext_resource type="Texture2D" uid="uid://cot3res7e48sq" path="res://assets/tileset/Tilesheet/monochrome_packed.png" id="5_5dxk1"]
+[ext_resource type="Texture2D" uid="uid://6behh7hi45qf" path="res://assets/tileset/background4a.png" id="5_d3o6j"]
 [ext_resource type="Texture2D" uid="uid://bmr7x8tx36b6j" path="res://assets/tileset/Tilesheet/monochrome-transparent_packed.png" id="5_jy02f"]
 [ext_resource type="PackedScene" uid="uid://bwg4sy1661mly" path="res://characters/enemies/aiming_enemy.tscn" id="5_mllcm"]
 [ext_resource type="Texture2D" uid="uid://nnfcxm8n5tmy" path="res://assets/tileset/Tilesheet/colored_packed.png" id="6_kjd3d"]
@@ -4397,6 +4401,66 @@ glow_blend_mode = 2
 [node name="Level01" type="Node2D" unique_id=548033891]
 script = ExtResource("1_81a5f")
 
+[node name="ParllaxBackground" type="Node2D" parent="." unique_id=1127677477]
+position = Vector2(634, -129)
+
+[node name="BackgroundFar" type="Parallax2D" parent="ParllaxBackground" unique_id=673081905]
+z_index = -100
+z_as_relative = false
+scroll_scale = Vector2(0, 0.1)
+scroll_offset = Vector2(816, -1830)
+repeat_size = Vector2(0, 320)
+repeat_times = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="ParllaxBackground/BackgroundFar" unique_id=1322934460]
+rotation = 1.5707964
+scale = Vector2(1, 4)
+texture = ExtResource("2_y72ps")
+centered = false
+
+[node name="BackgroundMid" type="Parallax2D" parent="ParllaxBackground" unique_id=141897785]
+z_index = -90
+z_as_relative = false
+scroll_scale = Vector2(0.1, 0.5)
+scroll_offset = Vector2(816, -1830)
+repeat_size = Vector2(0, 320)
+repeat_times = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="ParllaxBackground/BackgroundMid" unique_id=982261510]
+rotation = 1.5707964
+scale = Vector2(1, 4)
+texture = ExtResource("3_xw3ee")
+centered = false
+
+[node name="BackgroundClose" type="Parallax2D" parent="ParllaxBackground" unique_id=1540004798]
+z_index = -80
+z_as_relative = false
+scroll_scale = Vector2(0.5, 0.9)
+scroll_offset = Vector2(816, -1830)
+repeat_size = Vector2(0, 320)
+repeat_times = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="ParllaxBackground/BackgroundClose" unique_id=643632995]
+rotation = 1.5707964
+scale = Vector2(1, 4)
+texture = ExtResource("4_l0eo6")
+centered = false
+
+[node name="BackgroundCloseClose" type="Parallax2D" parent="ParllaxBackground" unique_id=1954441714]
+z_index = -80
+z_as_relative = false
+scroll_scale = Vector2(0.7, 1)
+scroll_offset = Vector2(816, -1830)
+repeat_size = Vector2(0, 320)
+repeat_times = 20
+
+[node name="Sprite2D" type="Sprite2D" parent="ParllaxBackground/BackgroundCloseClose" unique_id=247476657]
+position = Vector2(1, 0)
+rotation = 1.5707964
+scale = Vector2(1, 4)
+texture = ExtResource("5_d3o6j")
+centered = false
+
 [node name="Player" parent="." unique_id=708763606 instance=ExtResource("1_mckh2")]
 position = Vector2(43, 628)
 
@@ -4425,6 +4489,18 @@ color_pattern = Array[int]([2])
 
 [node name="ShotgunEnemy" parent="." unique_id=424472102 instance=ExtResource("8_j0sdw")]
 position = Vector2(810, 368)
+shoot_direction = null
+score_value = null
+color_pattern = null
+burst_count = null
+shot_delay = null
+burst_reload_time = null
+bullet_count = null
+spread_angle_deg = null
+shotgun_reload_time = null
+attack_types = null
+attack_weights = null
+attack_cooldowns = null
 
 [node name="AimingEnemy" parent="." unique_id=1052223728 instance=ExtResource("5_mllcm")]
 position = Vector2(803, -271)
@@ -4434,9 +4510,33 @@ position = Vector2(352, -1014)
 
 [node name="ShotgunEnemy2" parent="." unique_id=1694276132 instance=ExtResource("8_j0sdw")]
 position = Vector2(362, -596)
+shoot_direction = null
+score_value = null
+color_pattern = null
+burst_count = null
+shot_delay = null
+burst_reload_time = null
+bullet_count = null
+spread_angle_deg = null
+shotgun_reload_time = null
+attack_types = null
+attack_weights = null
+attack_cooldowns = null
 
 [node name="ShotgunEnemy3" parent="." unique_id=1109595350 instance=ExtResource("8_j0sdw")]
 position = Vector2(783, -590)
+shoot_direction = null
+score_value = null
+color_pattern = null
+burst_count = null
+shot_delay = null
+burst_reload_time = null
+bullet_count = null
+spread_angle_deg = null
+shotgun_reload_time = null
+attack_types = null
+attack_weights = null
+attack_cooldowns = null
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=598304165]
 color = Color(2.1658838e-07, 0, 0.22171634, 1)

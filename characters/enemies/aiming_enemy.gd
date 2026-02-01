@@ -33,6 +33,7 @@ var player_ref: Node2D = null # Store reference to player
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var glow_light = $GlowLight
 
 func _ready() -> void:
 	# 1. FIND THE PLAYER
@@ -100,10 +101,21 @@ func shoot_at_player() -> void:
 
 # --- UTILS (Same as before) ---
 func update_visual_color(state: ColorState) -> void:
+	var c = Color.WHITE
 	match state:
-		ColorState.RED: sprite.modulate = Color.RED
-		ColorState.GREEN: sprite.modulate = Color.GREEN
-		ColorState.BLUE: sprite.modulate = Color.BLUE
+		ColorState.RED: 
+			c = Color.RED
+			sprite.modulate = Color.RED
+		ColorState.GREEN: 
+			c = Color.GREEN
+			sprite.modulate = Color.GREEN
+		ColorState.BLUE: 
+			c = Color.BLUE
+			sprite.modulate = Color.BLUE
+			
+	# NEW: Update Light
+	if glow_light:
+		glow_light.color = c
 
 func get_color_value(state: ColorState) -> Color:
 	match state:

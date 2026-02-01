@@ -203,7 +203,14 @@ func check_laser_collision() -> void:
 
 # --- BOILERPLATE ---
 func update_sprite_color(state: ColorState) -> void:
-	sprite.modulate = get_color_value(state)
+	var c = get_color_value(state)
+	sprite.modulate = c
+	
+	# NEW: Update lights
+	if glow_light:
+		glow_light.color = c
+	if impact_light:
+		impact_light.color = c
 
 func get_color_value(state: ColorState) -> Color:
 	match state:

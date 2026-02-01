@@ -25,6 +25,7 @@ var enemy_color: ColorState = ColorState.RED
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var glow_light = $GlowLight
 
 @export_category("Telegraph Settings")
 @export var telegraph_time: float = 0.4 
@@ -106,10 +107,21 @@ func shoot_next_bullet() -> void:
 	current_pattern_index = (current_pattern_index + 1) % color_pattern.size()
 
 func update_visual_color(state: ColorState) -> void:
+	var c = Color.WHITE
 	match state:
-		ColorState.RED: sprite.modulate = Color.RED
-		ColorState.GREEN: sprite.modulate = Color.GREEN
-		ColorState.BLUE: sprite.modulate = Color.BLUE
+		ColorState.RED: 
+			c = Color.RED
+			sprite.modulate = Color.RED
+		ColorState.GREEN: 
+			c = Color.GREEN
+			sprite.modulate = Color.GREEN
+		ColorState.BLUE: 
+			c = Color.BLUE
+			sprite.modulate = Color.BLUE
+			
+	# NEW: Update Light
+	if glow_light:
+		glow_light.color = c
 
 func take_damage(amount: int) -> void:
 	health -= amount
