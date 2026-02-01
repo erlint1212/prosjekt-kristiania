@@ -4397,6 +4397,15 @@ glow_blend_mode = 2
 [node name="Level01" type="Node2D" unique_id=548033891]
 script = ExtResource("1_81a5f")
 
+[node name="TextureRect" type="TextureRect" parent="." unique_id=865110090]
+texture_repeat = 2
+offset_left = -216.0
+offset_top = 128.0
+offset_right = 1224.0
+offset_bottom = 784.0
+texture = ExtResource("8_j0sdw")
+stretch_mode = 1
+
 [node name="Player" parent="." unique_id=708763606 instance=ExtResource("1_mckh2")]
 position = Vector2(43, 628)
 

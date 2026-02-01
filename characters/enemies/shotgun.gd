@@ -46,7 +46,7 @@ enum AttackType { BURST, SHOTGUN }
 
 @onready var muzzle: Marker2D = $Marker2D
 @onready var timer: Timer = $Timer
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 var health: int = 5 
 var current_pattern_index: int = 0
@@ -59,6 +59,8 @@ var player_ref: Node2D = null
 
 func _ready() -> void:
 	rng.randomize()
+  sprite.play("idle")
+
 	original_scale = sprite.scale
 	
 	# NEW: Find the player
