@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bxd5iyfsbk7tn"]
+
+[ext_resource type="Script" uid="uid://87n1gmvdokbd" path="res://characters/enemies/shotgun.gd" id="1_7dq22"]
+[ext_resource type="Texture2D" uid="uid://u6u67slvbv3p" path="res://icon.svg" id="3_kq6yk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqu4p"]
+
+[node name="Shotgun" type="CharacterBody2D" unique_id=627157932 groups=["Enemies"]]
+collision_layer = 5
+script = ExtResource("1_7dq22")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1610434282]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_kq6yk")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1534417879]
+shape = SubResource("RectangleShape2D_aqu4p")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=984004818]
+position = Vector2(-41, 0)
+
+[node name="Timer" type="Timer" parent="." unique_id=1211394925]
+autostart = true
