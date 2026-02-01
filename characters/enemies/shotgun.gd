@@ -179,14 +179,21 @@ func reset_animation() -> void:
 func shoot_next_bullet(dir: Vector2) -> void:
 	if bullet_scene == null: return
 	if color_pattern.is_empty(): return
+
 	var chosen_color: ColorState = color_pattern[current_pattern_index]
+	# Don't update visual here if you want to keep the telegraph color active
 	
-	# Don't update visual here, we did it in telegraph
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = muzzle.global_position
 	bullet.direction = dir 
 	bullet.bullet_color = chosen_color
+	
+	# --- FIX: Tell the bullet who fired it ---
+	bullet.shooter = self 
+	# -----------------------------------------
+	
 	get_parent().add_child(bullet)
+	
 	current_pattern_index = (current_pattern_index + 1) % color_pattern.size()
 
 func spawn_bullet(dir: Vector2, color: ColorState) -> void:
@@ -194,6 +201,11 @@ func spawn_bullet(dir: Vector2, color: ColorState) -> void:
 	bullet.global_position = muzzle.global_position
 	bullet.direction = dir
 	bullet.bullet_color = color
+	
+	# --- FIX: Tell the bullet who fired it ---
+	bullet.shooter = self
+	# -----------------------------------------
+	
 	get_parent().add_child(bullet)
 
 func roll_weighted_attack() -> int:
@@ -233,10 +245,25 @@ func get_color_value(state: ColorState) -> Color:
 
 func take_damage(amount: int) -> void:
 	health -= amount
+	
+	# 1. Flash Sprite (HDR White)
 	var tween = create_tween()
-	tween.tween_property(sprite, "modulate", Color.WHITE, 0.1)
-	tween.tween_property(sprite, "modulate", get_color_value(enemy_color), 0.1)
-	if health <= 0: die()
+	tween.tween_property(sprite, "modulate", Color(10, 10, 10, 1), 0.05)
+	tween.tween_property(sprite, "modulate", get_color_value(enemy_color), 0.15)
+	
+	# 2. Flash Light
+	# We force the energy high. The _physics_process might fight this, 
+	# but the tween usually overrides for the split second needed.
+	if glow_light:
+		var light_tween = create_tween()
+		light_tween.tween_property(glow_light, "color", Color.WHITE, 0.05)
+		light_tween.parallel().tween_property(glow_light, "energy", 3.0, 0.05)
+		# Fade back to a low "alive" glow instead of 0.0, since laser enemy usually glows a bit
+		light_tween.tween_property(glow_light, "color", get_color_value(enemy_color), 0.1)
+		light_tween.parallel().tween_property(glow_light, "energy", 0.5, 0.1)
+
+	if health <= 0:
+		die()
 
 func die() -> void:
 	if GameManager: GameManager.add_score(score_value)

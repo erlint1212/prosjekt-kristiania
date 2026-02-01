@@ -23,13 +23,16 @@ gravity = Vector3(0, 0, 0)
 scale_min = 0.0
 scale_max = 5.0
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_q7qkl"]
+light_mode = 1
+
 [sub_resource type="Gradient" id="Gradient_c6leb"]
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_q7qkl"]
 gradient = SubResource("Gradient_c6leb")
-width = 16
-height = 16
+width = 32
+height = 32
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -44,4 +47,5 @@ process_material = SubResource("ParticleProcessMaterial_kpr0e")
 script = ExtResource("1_q7qkl")
 
 [node name="PointLight2D" type="PointLight2D" parent="." unique_id=1919054934]
+material = SubResource("CanvasItemMaterial_q7qkl")
 texture = SubResource("GradientTexture2D_q7qkl")
