@@ -5,10 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://cihjtbk4yn5bn" path="res://ui/hud.tscn" id="2_81a5f"]
 [ext_resource type="Texture2D" uid="uid://cot3res7e48sq" path="res://assets/tileset/Tilesheet/monochrome_packed.png" id="5_5dxk1"]
 [ext_resource type="Texture2D" uid="uid://bmr7x8tx36b6j" path="res://assets/tileset/Tilesheet/monochrome-transparent_packed.png" id="5_jy02f"]
+[ext_resource type="PackedScene" uid="uid://bwg4sy1661mly" path="res://characters/enemies/aiming_enemy.tscn" id="5_mllcm"]
 [ext_resource type="Texture2D" uid="uid://nnfcxm8n5tmy" path="res://assets/tileset/Tilesheet/colored_packed.png" id="6_kjd3d"]
 [ext_resource type="PackedScene" uid="uid://4jqledpki63v" path="res://characters/enemies/simple_shooter.tscn" id="6_q7ibo"]
 [ext_resource type="PackedScene" uid="uid://b4blftljemiah" path="res://characters/enemies/laser_enemy.tscn" id="7_cg8v6"]
 [ext_resource type="Texture2D" uid="uid://qc4eq8cpo1im" path="res://assets/tileset/Tilesheet/colored-transparent_packed.png" id="7_qdeet"]
+[ext_resource type="PackedScene" uid="uid://bxd5iyfsbk7tn" path="res://characters/enemies/shotgun.tscn" id="8_j0sdw"]
 [ext_resource type="PackedScene" uid="uid://b23ru0btwyha8" path="res://items/flag.tscn" id="9_jy02f"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_kjd3d"]
@@ -4420,5 +4422,20 @@ position = Vector2(408, 513)
 [node name="LaserEnemy2" parent="." unique_id=1116295514 instance=ExtResource("7_cg8v6")]
 position = Vector2(814, -153)
 color_pattern = Array[int]([2])
+
+[node name="ShotgunEnemy" parent="." unique_id=424472102 instance=ExtResource("8_j0sdw")]
+position = Vector2(810, 368)
+
+[node name="AimingEnemy" parent="." unique_id=1052223728 instance=ExtResource("5_mllcm")]
+position = Vector2(803, -271)
+
+[node name="LaserEnemy3" parent="." unique_id=831117461 instance=ExtResource("7_cg8v6")]
+position = Vector2(352, -1014)
+
+[node name="ShotgunEnemy2" parent="." unique_id=1694276132 instance=ExtResource("8_j0sdw")]
+position = Vector2(362, -596)
+
+[node name="ShotgunEnemy3" parent="." unique_id=1109595350 instance=ExtResource("8_j0sdw")]
+position = Vector2(783, -590)
 
 [connection signal="level_completed" from="Flag" to="." method="_on_flag_level_completed"]
